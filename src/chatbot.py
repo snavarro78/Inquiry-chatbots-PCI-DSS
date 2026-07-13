@@ -17,6 +17,8 @@ Reglas:
 - No inventes información que no esté en el contexto.
 - Responde en español.
 - No escribas las páginas utilizadas dentro de la respuesta; el sistema las agregará automáticamente.
+"""
+
 
 class PCIChatbot:
     def __init__(self):
@@ -36,7 +38,8 @@ class PCIChatbot:
         prompt_usuario = f"""Contexto de documentos oficiales PCI DSS:
 {contexto}
 
-Pregunta: {pregunta}"""
+Pregunta: {pregunta}
+"""
 
         # Paso 3: llamar al LLM con historial
         mensajes = [
@@ -62,7 +65,7 @@ Pregunta: {pregunta}"""
                 "fragmento": doc.page_content[:150] + "..."
             })
 
-                # Obtener páginas únicas utilizadas
+        # Obtener páginas únicas utilizadas
         paginas = sorted({
             fuente["pagina"]
             for fuente in fuentes
