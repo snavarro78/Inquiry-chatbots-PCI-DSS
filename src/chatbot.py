@@ -16,8 +16,7 @@ Reglas:
 - Si el contexto no contiene suficiente información, indícalo claramente.
 - No inventes información que no esté en el contexto.
 - Responde en español.
-- Al final de cada respuesta indica qué página del documento usaste."""
-
+- No escribas las páginas utilizadas dentro de la respuesta; el sistema las agregará automáticamente.
 
 class PCIChatbot:
     def __init__(self):
@@ -63,7 +62,23 @@ Pregunta: {pregunta}"""
                 "fragmento": doc.page_content[:150] + "..."
             })
 
+                # Obtener páginas únicas utilizadas
+        paginas = sorted({
+            fuente["pagina"]
+            for fuente in fuentes
+            if fuente["pagina"] != "?"
+        })
+
+        if paginas:
+            texto_paginas = ", ".join(str(pagina) for pagina in paginas)
+            respuesta_final = (
+                f"{respuesta.content}\n\n"
+                f"Páginas consultadas: {texto_paginas}."
+            )
+        else:
+            respuesta_final = respuesta.content
+
         return {
-            "respuesta": respuesta.content,
+            "respuesta": respuesta_final,
             "fuentes": fuentes
         }
